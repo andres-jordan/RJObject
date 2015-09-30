@@ -11,7 +11,7 @@ class MyDistribution:public Distribution
 	private:
 		// Limits
 		double a_min, a_max;
-		double mu_min, mu_max;
+		double s_min, s_max;
 		double v_min, v_max;
 
 		// Mean of exponential distribution for amplitudes
@@ -21,7 +21,7 @@ class MyDistribution:public Distribution
 
 	public:
 		MyDistribution(double a_min, double a_max,
-					double mu_min, double mu_max,
+					double s_min, double s_max,
 					double v_min, double v_max);
 
 		void fromPrior();

@@ -9,7 +9,7 @@ using namespace Eigen;
 using namespace DNest3;
 
 MyModel::MyModel()
-:objects(3, 10, false, MyDistribution(-6., 1., 1E-3, 1E3, -6, 6))
+:objects(3, 4, false, MyDistribution(-6., -1, -2, 1, -4, 4))
 ,mu(Data::get_instance().get_t().size())
 ,C(Data::get_instance().get_t().size(),
        Data::get_instance().get_t().size())
@@ -21,7 +21,7 @@ void MyModel::fromPrior()
 {
 	objects.fromPrior();
 	objects.consolidate_diff();
-	sigma = exp(log(1E-3) + log(1E6)*randomU());
+	sigma = exp(log(1E-4) + log(1E4)*randomU());
 	calculate_mu();
 	calculate_C();
 }
@@ -55,7 +55,7 @@ void MyModel::calculate_C()
                 			C(i,j) += (A*cos(2*M_PI*s*(t[i]-t[j])) * exp(-2*M_PI*M_PI*(t[i]-t[j])*(t[i]-t[j])*v));
                 		}           
                         if(i==j)
-                                C(i, j) += sig[i]*sig[i] + sigma*sigma;
+                                C(i, j) += sigma*sigma;
                         else
                                 C(j, i) = C(i, j);
                 }
@@ -142,8 +142,8 @@ double MyModel::logLikelihood() const
 
 void MyModel::print(std::ostream& out) const
 {
-	for(size_t i=0; i<mu.size(); i++)
-		out<<mu[i]<<' ';
+//	for(size_t i=0; i<mu.size(); i++)
+//		out<<mu[i]<<' ';
 	out<<sigma<<' ';
 	objects.print(out); out<<' ';
 }
